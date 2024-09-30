@@ -1,0 +1,7 @@
+.vs
+.vscode
+.metals
+.ionide
+.idea
+
+venv
