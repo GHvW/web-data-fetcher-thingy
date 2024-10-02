@@ -10,7 +10,6 @@ def replace_anchor_text(paragraph: BeautifulSoup) -> None:
         anchor.replace_with(anchor.get_text())
 
 
-
 def get_marvel_character_text(html: str) -> list[str]:
     soup = BeautifulSoup(html, "html.parser")
 
@@ -40,9 +39,13 @@ async def main():
 
             print("#results", len(results))
 
-            for it in results:
-                print(it)
+            with open("venom.html", "w") as writer:
+                writer.write("<html><head><link rel='stylesheet' type='text/css' href='./pages.css'></head><body><div id='content'><div>")
 
+                for item in results:
+                    writer.write(str(item))
+
+                writer.write("</div></div></body></html>")
 
 
 asyncio.run(main())
