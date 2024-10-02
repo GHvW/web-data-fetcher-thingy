@@ -2,6 +2,7 @@ import aiohttp
 import asyncio
 from itertools import chain
 from bs4 import BeautifulSoup
+from jinja2 import Environment, FileSystemLoader
 
 print("hello world")
 
@@ -26,32 +27,30 @@ def get_marvel_character_text(html: str) -> list[str]:
 
 
 async def main():
+    pages = [
+        ("Venom", "https://www.marvel.com/characters/venom-eddie-brock/in-comics"),
+        ("Wolverine", "https://www.marvel.com/characters/wolverine-logan/in-comics")
+    ]
+
+    env = Environment(loader=FileSystemLoader('./templates'))
+
+    template = env.get_template('marvel.html')
+
     async with aiohttp.ClientSession() as session:
-        # async with session.get("https://www.marvel.com/characters/venom-eddie-brock/in-comics") as response:
-        async with session.get("https://www.marvel.com/characters/wolverine-logan/in-comics") as response:
+        for character, url in pages:
+            async with session.get(url) as response:
 
-            print("Status:", response.status)
-            print("Content-type:", response.headers['content-type'])
+                page_html = await response.text()
 
-            html = await response.text()
+                results = get_marvel_character_text(page_html)
 
-            results = get_marvel_character_text(html)
+                final_html = template.render({ 
+                    "header": character, 
+                    "paragraphs": results 
+                })
 
-            print("#results", len(results))
-
-            with open("venom.html", "w") as writer:
-                writer.write("<html><head><link rel='stylesheet' type='text/css' href='./pages.css'></head><body>")
-
-                writer.write("<div class='container'><div id='heading'>")
-                writer.write("Venom")
-                writer.write("</div></div>")
-
-                writer.write("<div class='container'><div id='content'>")
-
-                for item in results:
-                    writer.write(str(item))
-
-                writer.write("</div></div></body></html>")
+                with open(f"dist/{character}.html", "w") as writer:
+                    writer.write(final_html)
 
 
 asyncio.run(main())

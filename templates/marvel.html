@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{{ header }}</title>
+        <link rel='stylesheet' type='text/css' href='./pages.css'>
+    </head>
+    <body>
+        <div class='container'>
+            <div id='heading'>
+                {{ header }}
+            </div>
+        </div>
+        <div class='container'>
+            <div id='content'>
+                {% for item in paragraphs %}
+                    {{ item }}
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
