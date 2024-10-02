@@ -40,7 +40,13 @@ async def main():
             print("#results", len(results))
 
             with open("venom.html", "w") as writer:
-                writer.write("<html><head><link rel='stylesheet' type='text/css' href='./pages.css'></head><body><div id='content'><div>")
+                writer.write("<html><head><link rel='stylesheet' type='text/css' href='./pages.css'></head><body>")
+
+                writer.write("<div class='container'><div id='heading'>")
+                writer.write("Venom")
+                writer.write("</div></div>")
+
+                writer.write("<div class='container'><div id='content'>")
 
                 for item in results:
                     writer.write(str(item))
