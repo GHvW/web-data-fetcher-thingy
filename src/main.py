@@ -4,7 +4,6 @@ from itertools import chain
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader
 
-print("hello world")
 
 def replace_anchor_text(paragraph: BeautifulSoup) -> None:
     for anchor in filter(lambda it: it is not None, paragraph.find_all("a")):
